@@ -1,20 +1,23 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
+import { User } from './user.js'
 
-export const User = sequelize.define('User', {
+export const Recipe = sequelize.define('Recipe', {
     id: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-        unique: true
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
       },
-    username: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-        primaryKey: true
     },
     ingredients: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    instructions: {
+        type: DataTypes.TEXT,
         allowNull: false
     },
     category: {
@@ -26,10 +29,19 @@ export const User = sequelize.define('User', {
         allowNull: false
     },
     userId: {
-        type: DataTypes.NUMBER,
-        allowNull: false
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User, // Modèle de la table parente
+            key: 'id' // Colonne de la table parente à laquelle la clé étrangère se réfère
+        }
     }
     }, {
-        timestamps: true,
+        tableName: 'Recipe', // Définition explicite du nom de la table
+        timestamps: false,
 });
-export default recipe;
+
+// Définir la relation entre Recipe et User
+Recipe.belongsTo(User, { foreignKey: 'userId' });
+
+export default Recipe;
