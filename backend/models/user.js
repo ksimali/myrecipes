@@ -3,10 +3,9 @@ import { sequelize } from '../config/database.js';
 
 export const User = sequelize.define('User', {
     id: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-        unique: true,
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
       },
     username: {
         type: DataTypes.STRING,
@@ -18,7 +17,8 @@ export const User = sequelize.define('User', {
         allowNull: false
     }
     }, {
-        timestamps: true,
+        tableName: 'User', // Définition explicite du nom de la table
+        timestamps: false,
 });
 
 export default User;
