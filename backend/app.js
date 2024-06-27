@@ -29,5 +29,10 @@ const PORT = process.env.PORT || 3000;
 
 // Synchronisation avec la base de données et démarrage du serveur
 sequelize.sync().then(() => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}.`)); // Démarrage du serveur sur le port spécifié
+    console.log('Database synchronized.');
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}.`);
+    });
+}).catch(err => {
+    console.error('Database synchronization error:', err);
 });
