@@ -12,10 +12,18 @@ const FormContainer = styled.div`
   border-radius: 8px;
 `;
 
+const ErrorText = styled.div`
+  color: red;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 0.875em;
+`;
+
 const Login = () => {
   // gestion de l'etat
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({ username: '', password: '' });
 
   //utilisation du contexte : acces à la fonction login de AuthContext en la renommant loginContext
   const { login: loginContext } = useContext(AuthContext);
@@ -23,8 +31,17 @@ const Login = () => {
   // pour naviguer efficacement vers d'autres route
   const navigate = useNavigate();
   
+  // gestion des erreurs du formulaire
+  const validate = () => {
+    console.log("hello!");
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
     try {
       const response = await login(username, password);
       loginContext(response.data.token);
@@ -49,6 +66,7 @@ const Login = () => {
                     placeholder="Username"
                     required
                 />
+                {errors.username && <ErrorText>{errors.username}</ErrorText>}
             </div>
             <div className="mb-3">
                 <label htmlFor="password" className="form-label">Mot de passe</label>
@@ -61,6 +79,7 @@ const Login = () => {
                     placeholder="Password" 
                     required
                 />
+                {errors.password && <ErrorText>{errors.password}</ErrorText>}
             </div>
             <button type="submit" className="btn btn-primary w-100">Se connecter</button>
         </form>
