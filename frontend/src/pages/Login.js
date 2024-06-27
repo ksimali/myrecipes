@@ -17,7 +17,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  //utilisation du contexte : acces à la fonction login de AuthContext
+  //utilisation du contexte : acces à la fonction login de AuthContext en la renommant loginContext
   const { login: loginContext } = useContext(AuthContext);
 
   // pour naviguer efficacement vers d'autres route
