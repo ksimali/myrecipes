@@ -89,26 +89,24 @@ const AddRecipe = () => {
         </div>
         <div className="mb-3">
         <label htmlFor="ingredients" className="form-label">Ingredients</label>
-          <input
-            type="text"
-            className="form-control mb-3"
-            rows="3"
-            id="ingredients"
-            value={ingredients}
-            onChange={(e) => setIngredients(e.target.value)}
-          />
+        <textarea
+          className="form-control mb-3"
+          id="ingredients"
+          rows="3" 
+          value={ingredients}
+          onChange={(e) => setIngredients(e.target.value)}
+        />
           {errors.ingredients && <ErrorText>{errors.ingredients}</ErrorText>}
         </div>
         <div className="mb-3">
         <label htmlFor="instructions" className="form-label">Instructions</label>
-          <input
-            type="text"
-            className="form-control mb-3"
-            rows="3"
-            id="instructions"
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
-          />
+        <textarea
+          className="form-control mb-3"
+          id="instructions"
+          rows="3"
+          value={instructions}
+          onChange={(e) => setInstructions(e.target.value)}
+        />
           {errors.instructions && <ErrorText>{errors.instructions}</ErrorText>}
         </div>
         <div className="mb-3">
