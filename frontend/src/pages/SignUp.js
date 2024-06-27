@@ -11,14 +11,52 @@ const FormContainer = styled.div`
   border-radius: 8px;
 `;
 
+const ErrorText = styled.div`
+  color: red;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 0.875em;
+`;
+
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({ username: '', password: '' });
 
   const navigate = useNavigate();
 
+  // gestion des erreurs du formulaire
+  const validate = () => {
+    let formErrors = {};
+
+    if (!username) {
+      formErrors.username = "Le nom d'utilisateur est requis.";
+    } else if(username.length < 2){
+      formErrors.username = "Le mot de passe doit contenir au moins 2 caractères."
+    } else if (!/^[a-zA-Z]+$/.test(username)) {
+      formErrors.username = "Le nom d'utilisateur doit contenir uniquement des lettres.";
+    }
+
+    if (!password) {
+      formErrors.password = 'Le mot de passe est requis.';
+    } else if (password.length < 6) {
+      formErrors.password = 'Le mot de passe doit contenir au moins 6 caractères.';
+    } else if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
+      formErrors.password = 'Le mot de passe doit contenir des lettres et des chiffres.';
+    }
+
+    setErrors(formErrors);
+
+    return !formErrors.username && !formErrors.password;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
     try {
       await signup(username, password);
       alert('User registered successfully!');
@@ -36,25 +74,25 @@ const SignUp = () => {
           <label htmlFor="username" className="form-label">Nom d'utilisateur</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control mb-3"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
-            required
           />
+          {errors.username && <ErrorText>{errors.username}</ErrorText>}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">Mot de passe</label>
           <input 
             type="text"
-            className="form-control"
+            className="form-control mb-3"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="password"
-            required
           />
+          {errors.password && <ErrorText>{errors.password}</ErrorText>}
         </div>
         <button type="submit" className="btn btn-primary w-100">S'inscrire</button>
 
