@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api';
+import { AuthContext } from '../components/AuthContext';
 import styled from 'styled-components';
 
 const FormContainer = styled.div`
@@ -10,16 +13,39 @@ const FormContainer = styled.div`
 `;
 
 const Login = () => {
+  // gestion de l'etat
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  //utilisation du contexte : acces à la fonction login de AuthContext
+  const { login: loginContext } = useContext(AuthContext);
+
+  // pour naviguer efficacement vers d'autres route
+  const navigate = useNavigate();
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await login(username, password);
+      loginContext(response.data.token);
+      navigate('/recipes');
+    } catch (error) {
+      alert('Login failed');
+    }
+  };
+
   return (
     <FormContainer className="mt-5">
         <h1 className="text-center">Connexion</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="mb-3">
                 <label htmlFor="username" className="form-label">Nom d'utilisateur</label>
                 <input
                     type="text"
                     className="form-control"
                     id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username"
                     required
                 />
@@ -30,6 +56,8 @@ const Login = () => {
                     type="text"
                     className="form-control"
                     id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password" 
                     required
                 />
